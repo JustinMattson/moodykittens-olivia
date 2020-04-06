@@ -27,17 +27,18 @@ function addKitten(event) {
     id: kId,
     name: form.name.value,
     mood: null,
-    affection: Math.round(Math.random() * 10),
+    affection: Math.ceil(Math.random() * 10),
   };
   let index = kittens.findIndex((kitten) => kitten.name == form.name.value);
-    if (index < 0) {
-      kittens.push(kitten);
-      setKittenMood(kId);
-      saveKittens();
-      drawKittens();
+  if (index < 0) {
+    kittens.push(kitten);
+    setKittenMood(kId);
+    saveKittens();
+    drawKittens();
   } else {
-      alert("Kitten Already Exists!");
+    alert("Kitten Already Exists!");
   }
+  document.getElementById("welcome").classList.add("hidden");
   form.reset();
 }
 
@@ -69,24 +70,34 @@ function loadKittens() {
  */
 function drawKittens() {
   let kittenListElement = document.getElementById("kittens");
+  let ranAway = "";
   let kittensTemplate = "";
   kittens.forEach((kitten) => {
+    // @ts-ignore
+    if (kitten.affection < 1 || kitten.affection == "Ran Away!") {
+      ranAway = "hidden";
+      // @ts-ignore
+      kitten.affection = "Ran Away!"
+    }
     kittensTemplate += `
-    <div class="k-card bg-dark mt-1 mb-1 img src="https://robohash.org/${kitten.name}/?set=set4" alt="Moody Kitten">
+    <div class="k-card kitten ${kitten.mood} mt-1" >
       <img src="https://robohash.org/${kitten.name}/?set=set4" alt="Moody Kitten"></i>
-      <font color=#fdfdfd>
         <h3><B>Name:</B> ${kitten.name}</h3>
+      <div>
         <div><B>Mood:</B> ${kitten.mood}</div>
         <div><B>Affection:</B> ${kitten.affection}</div>
-      </font>
-      <div class="d-flex space-between mt-2">
-        <button class="action btn-cancel type="button" onclick="pet('${kitten.id}')">Pet</button>
-        <i class="action fa fa-trash text-danger" onclick="removeKittenById('${kitten.id}')"></i>
-        <button class="action type="button" type="button" onclick="catnip('${kitten.id}')">Catnip</button>
+      </div>
+      <div class="d-flex space-between mt-1 ${ranAway}">
+        <button class="action btn-cancel" type="button" onclick="pet('${kitten.id}')">Pet</button>
+          <span title="Send kitten to the pound!">
+            <i class="action text-danger fa fa-trash" onclick="removeKittenById('${kitten.id}')"></i>
+          </span>
+        <button class="action" type="button" onclick="catnip('${kitten.id}')">Catnip</button>
         </div>
-    </div>
+      </div>
     &nbsp`;
-  });
+    ranAway = "";
+    });
   kittenListElement.innerHTML = kittensTemplate;
 }
 
@@ -169,7 +180,7 @@ function catnip(id) {
 function setKittenMood(id) {
   let index = kittens.findIndex((kitten) => kitten.id == id);
   let catMood = findKittenById(id);
-  
+
   console.log(catMood);
   console.log(catMood.mood);
 
@@ -233,4 +244,14 @@ function removeKittenById(kittenID) {
   kittens.splice(index, 1);
   //console.log("removeKittenById() Success");
   saveKittens();
+}
+
+/**
+ * This function is called to slaughter all kittens.
+ */
+function freshStart() {
+  document.getElementById("welcome").remove();
+  kittens = [];
+  saveKittens();
+  drawKittens();
 }
