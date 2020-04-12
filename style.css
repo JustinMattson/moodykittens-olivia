@@ -82,6 +82,7 @@ button{
   cursor: pointer;
   padding: .5em;
 }
+
 button:focus{
   outline: none;
 }

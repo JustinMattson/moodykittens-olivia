@@ -81,21 +81,27 @@ function drawKittens() {
     }
     kittensTemplate += `
     <div class="k-card kitten ${kitten.mood} mt-1" >
-      <img src="https://robohash.org/${kitten.name}/?set=set4" alt="Moody Kitten"></i>
-        <h3><B>Name:</B> ${kitten.name}</h3>
+      
+      <center>
+        <img src="https://robohash.org/${kitten.name}/?set=set4" alt="Moody Kitten"></i>
+      </center>
+      
+      <h3><B>Name:</B> ${kitten.name}</h3>
       <div>
         <div><B>Mood:</B> ${kitten.mood}</div>
         <div><B>Affection:</B> ${kitten.affection}</div>
       </div>
+      
       <div class="d-flex space-between mt-1 ${ranAway}">
         <button class="action btn-cancel" type="button" onclick="pet('${kitten.id}')">Pet</button>
           <span title="Send kitten to the pound!">
             <i class="action text-danger fa fa-trash" onclick="removeKittenById('${kitten.id}')"></i>
           </span>
         <button class="action" type="button" onclick="catnip('${kitten.id}')">Catnip</button>
-        </div>
       </div>
-    &nbsp`;
+      
+    </div>
+    &nbsp;&nbsp;`;
     ranAway = "";
     });
   kittenListElement.innerHTML = kittensTemplate;
