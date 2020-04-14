@@ -38,8 +38,8 @@ function addKitten(event) {
   } else {
     alert("Kitten Already Exists!");
   }
-  document.getElementById("welcome").classList.add("hidden");
   form.reset();
+  document.getElementById("welcome").classList.add("hidden");
 }
 
 /**
